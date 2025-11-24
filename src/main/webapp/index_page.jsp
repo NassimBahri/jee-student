@@ -6,6 +6,16 @@
     <title>Liste des étudiants</title>
 </head>
 <body>
+
+<%
+
+if(session.getAttribute("message") != null){
+    out.println(session.getAttribute("message"));
+    session.removeAttribute("message");
+}
+%>
+
+
 <p>
     <a href="ajout.jsp">Ajouter un étudiant</a>
 </p>
@@ -17,6 +27,7 @@
         <th>#</th>
         <th>Nom</th>
         <th>Classe</th>
+        <th>Supprimer</th>
     </tr>
     <% while(etudiants.next()){
     %>
@@ -24,6 +35,7 @@
         <td><%= etudiants.getInt("id") %></td>
         <td><%= etudiants.getString("nom") %></td>
         <td><%= etudiants.getString("classe") %></td>
+        <td><a href="./?del&id=<%= etudiants.getInt("id") %>" onclick="return confirm('êtes vous sûr ?')">Supprimer</a></td>
     </tr>
     <%
     } %>

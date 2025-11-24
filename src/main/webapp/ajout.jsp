@@ -6,15 +6,22 @@
     <title>Ajouter un étudiant</title>
 </head>
 <body>
+<%
+
+    if(session.getAttribute("message") != null){
+        out.println(session.getAttribute("message"));
+        session.removeAttribute("message");
+    }
+%>
     <h1>Ajouter un étudiant</h1>
     <form method="post" action="./">
         <p>
             <label for="nom">Nom de l'étudiant</label>
-            <input type="text" name="nom" id="nom" required>
+            <input type="text" name="nom" id="nom">
         </p>
         <p>
             <label for="classe">Classe de l'étudiant</label>
-            <input type="text" name="classe" id="classe" required>
+            <input type="text" name="classe" id="classe">
         </p>
         <p>
             <input type="submit" value="Ajouter">

@@ -52,7 +52,7 @@ public class Etudiant {
      * @return liste des étudiants
      */
     public static ResultSet getAll(Statement statement){
-        String sql = "SELECT * FROM etudiant";
+        String sql = "SELECT * FROM etudiant ORDER BY id DESC";
         try {
             ResultSet result = statement.executeQuery(sql);
             return result;
@@ -61,12 +61,29 @@ public class Etudiant {
         }
     }
 
+    /**
+     * Méthode qui permet d'ajouter un nouvel étudiant
+     * @param connexion Objet représentant la connexion à la base de données
+     * @return 1 si l'étudiant a bien été inséré
+     */
     public int add(Connection connexion){
         String sql = "INSERT INTO etudiant(nom, classe) VALUES (?, ?)";
         try {
             PreparedStatement preparedStatement = connexion.prepareStatement(sql);
             preparedStatement.setString(1, nom);
             preparedStatement.setString(2, classe);
+            int n = preparedStatement.executeUpdate();
+            return n;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public int delete(Connection connexion){
+        String sql = "DELETE FROM etudiant WHERE id = ?";
+        try {
+            PreparedStatement preparedStatement = connexion.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
             int n = preparedStatement.executeUpdate();
             return n;
         } catch (SQLException e) {
