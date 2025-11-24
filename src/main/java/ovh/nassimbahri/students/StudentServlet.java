@@ -43,15 +43,10 @@ public class StudentServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String sql = "SELECT * FROM etudiant";
-        try {
-            ResultSet result = statement.executeQuery(sql);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("index_page.jsp");
-            request.setAttribute("etudiants", result);
-            dispatcher.forward(request, response);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        ResultSet result = Etudiant.getAll(statement);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("index_page.jsp");
+        request.setAttribute("etudiants", result);
+        dispatcher.forward(request, response);
     }
 
     @Override
@@ -64,17 +59,13 @@ public class StudentServlet extends HttpServlet {
             out.println("Veuillez remplir tous les champs");
         }
         else{
-            String sql = "INSERT INTO etudiant(nom, classe) VALUES ('"+nom+"', '"+classe+"')";
-            try {
-                int n = statement.executeUpdate(sql);
-                if(n == 1){
-                    out.println("Bravo! ajout avec succès.");
-                }
-                else{
-                    out.println("Echec!!!");
-                }
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+            Etudiant etudiant = new Etudiant(nom, classe);
+            int n = etudiant.add(connexion);
+            if(n == 1){
+                out.println("Bravo! ajout avec succès.");
+            }
+            else{
+                out.println("Echec!!!");
             }
         }
     }
