@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.*;
 
 @WebServlet(name="StudentServlet", value="/")
@@ -53,5 +54,28 @@ public class StudentServlet extends HttpServlet {
         }
     }
 
-
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String nom = request.getParameter("nom");
+        String classe = request.getParameter("classe");
+        PrintWriter out = response.getWriter();
+        if(nom == null || nom.equals("") || classe == null || classe.equals("")) {
+            out.println("Veuillez remplir tous les champs");
+        }
+        else{
+            String sql = "INSERT INTO etudiant(nom, classe) VALUES ('"+nom+"', '"+classe+"')";
+            try {
+                int n = statement.executeUpdate(sql);
+                if(n == 1){
+                    out.println("Bravo! ajout avec succès.");
+                }
+                else{
+                    out.println("Echec!!!");
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 }
