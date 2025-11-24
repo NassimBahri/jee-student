@@ -6,6 +6,10 @@
     <title>Liste des étudiants</title>
 </head>
 <body>
+<p>
+    <a href="ajout.jsp">Ajouter un étudiant</a>
+</p>
+
 <h1>Liste des étudiants</h1>
 <% ResultSet etudiants = (ResultSet) request.getAttribute("etudiants"); %>
 <table border="1">
