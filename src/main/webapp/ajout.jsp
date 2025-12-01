@@ -1,3 +1,4 @@
+<%@ page import="ovh.nassimbahri.students.Flash" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -6,13 +7,7 @@
     <title>Ajouter un étudiant</title>
 </head>
 <body>
-<%
-
-    if(session.getAttribute("message") != null){
-        out.println(session.getAttribute("message"));
-        session.removeAttribute("message");
-    }
-%>
+<%= Flash.show(session) %>
     <h1>Ajouter un étudiant</h1>
     <form method="post" action="./">
         <p>

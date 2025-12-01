@@ -6,7 +6,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -48,9 +47,7 @@ public class StudentServlet extends HttpServlet {
            doDelete(request, response);
         }else if(request.getParameter("update") != null){
             doPut(request, response);
-        }else if(request.getParameter("edit") != null){
-            modifier(request, response);
-        } else if(request.getMethod().equals("POST")){
+        }else if(request.getMethod().equals("POST")){
             doPost(request, response);
         }
         else{
@@ -73,16 +70,16 @@ public class StudentServlet extends HttpServlet {
         String nom = request.getParameter("nom");
         String classe = request.getParameter("classe");
         PrintWriter out = response.getWriter();
-        HttpSession session = request.getSession();
         if(nom == null || nom.equals("") || classe == null || classe.equals("")) {
-            session.setAttribute("message", "<div style=\"color:red;border: solid 1px red; padding: 10px;\">Erreur! Veuillez remplir tous les champs.</div>");
+            Flash.create(request, "echec", "Erreur! Veuillez remplir tous les champs.");
             response.sendRedirect("./ajout.jsp");
         }
         else{
             Etudiant etudiant = new Etudiant(nom, classe);
             int n = etudiant.add(connexion);
             if(n == 1){
-                session.setAttribute("message", "<div style=\"color:green;border: solid 1px green; padding: 10px;\">Bravo! cet étudiant a bien été ajouté.</div>");
+                Flash.create(request, "success", "Bravo! cet étudiant a bien été ajouté.");
+
                 response.sendRedirect("./");
             }
             else{
@@ -97,10 +94,9 @@ public class StudentServlet extends HttpServlet {
         Etudiant etudiant = new Etudiant();
         etudiant.setId(Integer.parseInt(request.getParameter("id")));
         int n = etudiant.delete(connexion);
-        HttpSession session = request.getSession();
         PrintWriter out = response.getWriter();
         if(n == 1){
-            session.setAttribute("message", "<div style=\"color:green;border: solid 1px green; padding: 10px;\">Bravo! cet étudiant a bien été supprimé.</div>");
+            Flash.create(request, "success", "Bravo! cet étudiant a bien été supprimé");
             response.sendRedirect("./");
         }
         else{
@@ -111,20 +107,6 @@ public class StudentServlet extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        Etudiant etudiant = Etudiant.getById(connexion, id);
-        if(etudiant == null){
-            System.out.println("non existant!");
-            return;
-        }
-        RequestDispatcher dispatcher = request.getRequestDispatcher("edit.jsp");
-        request.setAttribute("etudiant", etudiant);
-        dispatcher.forward(request, response);
-    }
-
-    protected void modifier(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        HttpSession session = request.getSession();
         PrintWriter out = response.getWriter();
         int id = Integer.parseInt(request.getParameter("id"));
         Etudiant etudiant = Etudiant.getById(connexion, id);
@@ -132,23 +114,28 @@ public class StudentServlet extends HttpServlet {
             System.out.println("non existant!");
             return;
         }
-        String nom = request.getParameter("nom");
-        String classe = request.getParameter("classe");
-        if(nom == null || nom.equals("") || classe == null || classe.equals("")) {
-            session.setAttribute("message", "<div style=\"color:red;border: solid 1px red; padding: 10px;\">Erreur! Veuillez remplir tous les champs.</div>");
-            response.sendRedirect("./?update&id=" + etudiant.getId());
-        }
-        else{
-            etudiant.setNom(nom);
-            etudiant.setClasse(classe);
-            int n = etudiant.update(connexion);
-            if(n == 1){
-                session.setAttribute("message", "<div style=\"color:green;border: solid 1px green; padding: 10px;\">Bravo! cet étudiant a bien été modifié.</div>");
-                response.sendRedirect("./");
+        if (request.getMethod().equals("POST")){
+            String nom = request.getParameter("nom");
+            String classe = request.getParameter("classe");
+            if(nom == null || nom.equals("") || classe == null || classe.equals("")) {
+                Flash.create(request, "echec", "Erreur! Veuillez remplir tous les champs.");
             }
             else{
-                out.println("Echec!!!");
+                etudiant.setNom(nom);
+                etudiant.setClasse(classe);
+                int n = etudiant.update(connexion);
+                if(n == 1){
+                    Flash.create(request, "success", "Bravo! cet étudiant a bien été modifié.");
+                    response.sendRedirect("./");
+                    return;
+                }
+                else{
+                    out.println("Echec!!!");
+                }
             }
         }
+        RequestDispatcher dispatcher = request.getRequestDispatcher("edit.jsp");
+        request.setAttribute("etudiant", etudiant);
+        dispatcher.forward(request, response);
     }
 }

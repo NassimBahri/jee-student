@@ -1,4 +1,5 @@
 <%@ page import="java.sql.ResultSet" %>
+<%@ page import="ovh.nassimbahri.students.Flash" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -7,13 +8,7 @@
 </head>
 <body>
 
-<%
-
-if(session.getAttribute("message") != null){
-    out.println(session.getAttribute("message"));
-    session.removeAttribute("message");
-}
-%>
+<%= Flash.show(session) %>
 
 
 <p>

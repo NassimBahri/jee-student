@@ -1,4 +1,5 @@
 <%@ page import="ovh.nassimbahri.students.Etudiant" %>
+<%@ page import="ovh.nassimbahri.students.Flash" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -7,17 +8,13 @@
     <title>Modifier un étudiant</title>
 </head>
 <body>
+
+<%= Flash.show(session) %>
 <%
-
-    if(session.getAttribute("message") != null){
-        out.println(session.getAttribute("message"));
-        session.removeAttribute("message");
-    }
-
     Etudiant etudiant = (Etudiant)request.getAttribute("etudiant");
 %>
 <h1>Modifier un étudiant</h1>
-<form method="post" action="./?edit&id=<%= etudiant.getId() %>">
+<form method="post" action="./?update&id=<%= etudiant.getId() %>">
     <p>
         <label for="nom">Nom de l'étudiant</label>
         <input type="text" name="nom" id="nom" value="<%= etudiant.getNom() %>">
