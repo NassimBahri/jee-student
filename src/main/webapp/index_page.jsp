@@ -28,6 +28,7 @@ if(session.getAttribute("message") != null){
         <th>Nom</th>
         <th>Classe</th>
         <th>Supprimer</th>
+        <th>Modifier</th>
     </tr>
     <% while(etudiants.next()){
     %>
@@ -36,6 +37,7 @@ if(session.getAttribute("message") != null){
         <td><%= etudiants.getString("nom") %></td>
         <td><%= etudiants.getString("classe") %></td>
         <td><a href="./?del&id=<%= etudiants.getInt("id") %>" onclick="return confirm('êtes vous sûr ?')">Supprimer</a></td>
+        <td><a href="./?update&id=<%= etudiants.getInt("id") %>">Modifier</a></td>
     </tr>
     <%
     } %>

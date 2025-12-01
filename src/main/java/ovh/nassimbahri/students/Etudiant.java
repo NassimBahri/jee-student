@@ -90,4 +90,23 @@ public class Etudiant {
             throw new RuntimeException(e);
         }
     }
+
+    public static Etudiant getById(Connection connexion, int id){
+        String sql = "SELECT * FROM etudiant WHERE id = ?";
+        try {
+            PreparedStatement statement = connexion.prepareStatement(sql);
+            statement.setInt(1, id);
+            ResultSet result = statement.executeQuery();
+            if(result.next()) {
+                Etudiant etudiant = new Etudiant();
+                etudiant.id = result.getInt("id");
+                etudiant.nom = result.getString("nom");
+                etudiant.classe = result.getString("classe");
+                return etudiant;
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

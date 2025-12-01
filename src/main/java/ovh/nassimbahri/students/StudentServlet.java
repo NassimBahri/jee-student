@@ -47,7 +47,7 @@ public class StudentServlet extends HttpServlet {
         if(request.getParameter("del") != null){
            doDelete(request, response);
         }else if(request.getParameter("update") != null){
-            System.out.println("Méthode de modification");
+            doPut(request, response);
         } else if(request.getMethod().equals("POST")){
             doPost(request, response);
         }
@@ -104,5 +104,19 @@ public class StudentServlet extends HttpServlet {
         else{
             out.println("Echec!!!");
         }
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        Etudiant etudiant = Etudiant.getById(connexion, id);
+        if(etudiant == null){
+            System.out.println("non existant!");
+            return;
+        }
+        RequestDispatcher dispatcher = request.getRequestDispatcher("edit.jsp");
+        request.setAttribute("etudiant", etudiant);
+        dispatcher.forward(request, response);
     }
 }
