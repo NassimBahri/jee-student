@@ -17,7 +17,7 @@
     Etudiant etudiant = (Etudiant)request.getAttribute("etudiant");
 %>
 <h1>Modifier un étudiant</h1>
-<form method="post" action="./?update">
+<form method="post" action="./?edit&id=<%= etudiant.getId() %>">
     <p>
         <label for="nom">Nom de l'étudiant</label>
         <input type="text" name="nom" id="nom" value="<%= etudiant.getNom() %>">
@@ -27,7 +27,7 @@
         <input type="text" name="classe" id="classe" value="<%= etudiant.getClasse() %>">
     </p>
     <p>
-        <input type="submit" value="Ajouter">
+        <input type="submit" value="Modifier">
         <input type="reset" value="Vider">
     </p>
 </form>

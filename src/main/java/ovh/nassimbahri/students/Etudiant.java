@@ -109,4 +109,18 @@ public class Etudiant {
             throw new RuntimeException(e);
         }
     }
+
+    public int update(Connection connexion){
+        String sql = "UPDATE etudiant SET nom = ?, classe = ? WHERE id = ?";
+        try {
+            PreparedStatement preparedStatement = connexion.prepareStatement(sql);
+            preparedStatement.setString(1, nom);
+            preparedStatement.setString(2, classe);
+            preparedStatement.setInt(3, id);
+            int n = preparedStatement.executeUpdate();
+            return n;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

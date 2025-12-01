@@ -48,6 +48,8 @@ public class StudentServlet extends HttpServlet {
            doDelete(request, response);
         }else if(request.getParameter("update") != null){
             doPut(request, response);
+        }else if(request.getParameter("edit") != null){
+            modifier(request, response);
         } else if(request.getMethod().equals("POST")){
             doPost(request, response);
         }
@@ -118,5 +120,35 @@ public class StudentServlet extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("edit.jsp");
         request.setAttribute("etudiant", etudiant);
         dispatcher.forward(request, response);
+    }
+
+    protected void modifier(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        PrintWriter out = response.getWriter();
+        int id = Integer.parseInt(request.getParameter("id"));
+        Etudiant etudiant = Etudiant.getById(connexion, id);
+        if(etudiant == null){
+            System.out.println("non existant!");
+            return;
+        }
+        String nom = request.getParameter("nom");
+        String classe = request.getParameter("classe");
+        if(nom == null || nom.equals("") || classe == null || classe.equals("")) {
+            session.setAttribute("message", "<div style=\"color:red;border: solid 1px red; padding: 10px;\">Erreur! Veuillez remplir tous les champs.</div>");
+            response.sendRedirect("./?update&id=" + etudiant.getId());
+        }
+        else{
+            etudiant.setNom(nom);
+            etudiant.setClasse(classe);
+            int n = etudiant.update(connexion);
+            if(n == 1){
+                session.setAttribute("message", "<div style=\"color:green;border: solid 1px green; padding: 10px;\">Bravo! cet étudiant a bien été modifié.</div>");
+                response.sendRedirect("./");
+            }
+            else{
+                out.println("Echec!!!");
+            }
+        }
     }
 }
