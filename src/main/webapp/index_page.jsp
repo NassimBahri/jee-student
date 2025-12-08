@@ -1,5 +1,5 @@
 <%@ page import="java.sql.ResultSet" %>
-<%@ page import="ovh.nassimbahri.students.Flash" %>
+<%@ page import="ovh.nassimbahri.students.utils.Flash" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -10,38 +10,43 @@
 </head>
 <body>
 
-<div class="container">
+<%@ include file="includes/menu.jsp"%>
 
-    <%= Flash.show(session) %>
+<main style="margin-top: 90px;">
+    <div class="container">
 
 
-    <p>
-        <a href="ajout.jsp">Ajouter un étudiant</a>
-    </p>
+        <%= Flash.show(session) %>
 
-    <h1>Liste des étudiants</h1>
-    <% ResultSet etudiants = (ResultSet) request.getAttribute("etudiants"); %>
-    <table class="table table-striped">
-        <tr>
-            <th>#</th>
-            <th>Nom</th>
-            <th>Classe</th>
-            <th>Supprimer</th>
-            <th>Modifier</th>
-        </tr>
-        <% while(etudiants.next()){
-        %>
-        <tr>
-            <td><%= etudiants.getInt("id") %></td>
-            <td><%= etudiants.getString("nom") %></td>
-            <td><%= etudiants.getString("classe") %></td>
-            <td><a href="./?del&id=<%= etudiants.getInt("id") %>" onclick="return confirm('êtes vous sûr ?')">Supprimer</a></td>
-            <td><a href="./?update&id=<%= etudiants.getInt("id") %>">Modifier</a></td>
-        </tr>
-        <%
-            } %>
-    </table>
-</div>
+
+        <p>
+            <a href="ajout.jsp" class="btn btn-primary">Ajouter un étudiant</a>
+        </p>
+
+        <h1>Liste des étudiants</h1>
+        <% ResultSet etudiants = (ResultSet) request.getAttribute("etudiants"); %>
+        <table class="table table-striped">
+            <tr>
+                <th>#</th>
+                <th>Nom</th>
+                <th>Classe</th>
+                <th>Supprimer</th>
+                <th>Modifier</th>
+            </tr>
+            <% while(etudiants.next()){
+            %>
+            <tr>
+                <td><%= etudiants.getInt("id") %></td>
+                <td><%= etudiants.getString("nom") %></td>
+                <td><%= etudiants.getString("classe") %></td>
+                <td><a href="./?del&id=<%= etudiants.getInt("id") %>" onclick="return confirm('êtes vous sûr ?')">Supprimer</a></td>
+                <td><a href="./?update&id=<%= etudiants.getInt("id") %>">Modifier</a></td>
+            </tr>
+            <%
+                } %>
+        </table>
+    </div>
+</main>
 
 </body>
 </html>

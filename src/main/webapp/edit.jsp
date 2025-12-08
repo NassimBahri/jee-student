@@ -1,5 +1,5 @@
-<%@ page import="ovh.nassimbahri.students.Etudiant" %>
-<%@ page import="ovh.nassimbahri.students.Flash" %>
+<%@ page import="ovh.nassimbahri.students.models.Etudiant" %>
+<%@ page import="ovh.nassimbahri.students.utils.Flash" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">

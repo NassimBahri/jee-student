@@ -1,4 +1,4 @@
-package ovh.nassimbahri.students;
+package ovh.nassimbahri.students.utils;
 
 public class Config {
 
