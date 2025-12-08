@@ -11,6 +11,7 @@ public class Admin {
     private String nom;
     private String login;
     private String password;
+    private String role;
 
     public int getId() {
         return id;
@@ -44,13 +45,22 @@ public class Admin {
         this.password = password;
     }
 
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
     public Admin() {
     }
 
-    public Admin(String password, String login, String nom, int id) {
+    public Admin(String password, String login, String nom, String role, int id) {
         this.password = password;
         this.login = login;
         this.nom = nom;
+        this.role = role;
         this.id = id;
     }
 
@@ -67,11 +77,22 @@ public class Admin {
                 admin.nom = result.getString("nom");
                 admin.login = result.getString("login");
                 admin.password = result.getString("password");
+                admin.role = result.getString("role");
                 return admin;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return null;
+    }
+
+    public boolean isLogged(){
+        return this != null;
+    }
+
+    public boolean is(String role){
+        if(this == null)
+            return false;
+        return this.role.equals(role);
     }
 }

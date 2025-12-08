@@ -5,6 +5,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import ovh.nassimbahri.students.models.Admin;
 import ovh.nassimbahri.students.models.Etudiant;
 import ovh.nassimbahri.students.utils.Flash;
 
@@ -18,11 +20,13 @@ public class StudentServlet extends BaseServlet {
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if(request.getParameter("del") != null){
+        HttpSession session = request.getSession();
+        Admin admin = (Admin)session.getAttribute("admin");
+        if(request.getParameter("del") != null && admin.is("admin")){
            doDelete(request, response);
-        }else if(request.getParameter("update") != null){
+        }else if(request.getParameter("update") != null && admin.is("admin")){
             doPut(request, response);
-        }else if(request.getMethod().equals("POST")){
+        }else if(request.getMethod().equals("POST") && admin.isLogged()){
             doPost(request, response);
         }
         else{

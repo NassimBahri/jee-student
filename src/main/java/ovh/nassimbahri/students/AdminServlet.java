@@ -5,6 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import ovh.nassimbahri.students.models.Admin;
 import ovh.nassimbahri.students.utils.Flash;
 
@@ -16,6 +17,12 @@ public class AdminServlet extends BaseServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if(request.getParameter("logout") != null){
+            HttpSession session = request.getSession();
+            session.removeAttribute("admin");
+            response.sendRedirect("./");
+            return;
+        }
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("login.jsp");
         requestDispatcher.forward(request, response);
     }
@@ -38,7 +45,9 @@ public class AdminServlet extends BaseServlet {
             requestDispatcher.forward(request, response);
         }
         else{
-            System.out.println("ok");
+            HttpSession session = request.getSession();
+            session.setAttribute("admin", admin);
+            response.sendRedirect("./");
         }
     }
 }

@@ -1,3 +1,7 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="ovh.nassimbahri.students.models.Admin" %><%
+Admin admin = (Admin)session.getAttribute("admin");
+%>
 <header>
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <div class="container-fluid">
@@ -11,7 +15,14 @@
                         <a class="nav-link active" aria-current="page" href="./">Accueil</a>
                     </li>
                     <li class="nav-item">
+                        <% if (admin == null){ %>
                         <a class="nav-link active" aria-current="page" href="./user">Se connecter</a>
+                        <% }else{ %>
+                            <a class="nav-link active">
+                                Bonjour <%= admin.getNom() %>
+                                (<a href="./user?logout">Déconnexion</a>)
+                            </a>
+                        <% } %>
                     </li>
                 </ul>
             </div>

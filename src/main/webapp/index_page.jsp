@@ -18,10 +18,11 @@
 
         <%= Flash.show(session) %>
 
-
+        <% if (admin.isLogged() ){ %>
         <p>
             <a href="ajout.jsp" class="btn btn-primary">Ajouter un étudiant</a>
         </p>
+        <% } %>
 
         <h1>Liste des étudiants</h1>
         <% ResultSet etudiants = (ResultSet) request.getAttribute("etudiants"); %>
@@ -30,8 +31,10 @@
                 <th>#</th>
                 <th>Nom</th>
                 <th>Classe</th>
+                <% if(admin.is("admin")){ %>
                 <th>Supprimer</th>
                 <th>Modifier</th>
+                <% } %>
             </tr>
             <% while(etudiants.next()){
             %>
@@ -39,8 +42,10 @@
                 <td><%= etudiants.getInt("id") %></td>
                 <td><%= etudiants.getString("nom") %></td>
                 <td><%= etudiants.getString("classe") %></td>
+                <% if(admin.is("admin")){ %>
                 <td><a href="./?del&id=<%= etudiants.getInt("id") %>" onclick="return confirm('êtes vous sûr ?')">Supprimer</a></td>
                 <td><a href="./?update&id=<%= etudiants.getInt("id") %>">Modifier</a></td>
+                <% } %>
             </tr>
             <%
                 } %>
